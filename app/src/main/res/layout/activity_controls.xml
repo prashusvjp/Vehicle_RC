@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context=".ControlsActivity">
+
+
+    <LinearLayout
+        android:id="@+id/generalControlsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/indicatorControlsLayout"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/indicatorsTxtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Indicators" />
+
+            <ImageView
+                android:id="@+id/leftIndicatorImgView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/indicatorsTxtView"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/arrow_left_inactive" />
+
+            <ImageView
+                android:id="@+id/rightIndicatorImgView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/indicatorsTxtView"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/arrow_right_inactive" />
+
+        </RelativeLayout>
+
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/ubuntu"
+            android:gravity="center"
+            android:text="Switch to Auto"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <ImageView
+            android:id="@+id/powerImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_view_power"
+            android:elevation="10dp"
+            android:padding="15dp"
+            android:src="@drawable/power_off" />
+
+        <ImageView
+            android:id="@+id/cameraImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rounded_view_power"
+            android:elevation="10dp"
+            android:padding="15dp"
+            android:src="@drawable/camera_inactive" />
+
+        <ImageView
+            android:id="@+id/switchODImgView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:background="@drawable/rounded_view_power"
+            android:elevation="10dp"
+            android:padding="15dp"
+            android:src="@drawable/camera_inactive" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp">
+
+            <TextView
+                android:id="@+id/connectDeviceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Connect to:"/>
+
+            <Spinner
+                android:id="@+id/devicesListSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/connectDeviceTextView" />
+        </RelativeLayout>
+
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/generalControlsLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="30dp"
+            android:elevation="20dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/arrowLeftImgView"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/ic_arrow"
+                android:rotation="90" />
+
+            <ImageView
+                android:id="@+id/brakeImgView"
+                android:layout_width="75dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:contentDescription="Brake Image"
+                android:src="@drawable/brake" />
+
+            <ImageView
+                android:id="@+id/arrowRightImgView"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/ic_arrow"
+                android:rotation="270" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/brakeLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="30dp"
+            android:layout_alignParentEnd="true"
+            android:elevation="20dp"
+            android:paddingTop="10dp">
+
+            <ImageView
+                android:id="@+id/arrowForwardImgView"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:src="@drawable/ic_arrow"
+                android:rotation="180"
+                android:layout_centerHorizontal="true"/>
+
+
+            <ImageView
+                android:id="@+id/arrowBackwardImgView"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/ic_arrow" />
+        </LinearLayout>
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:backgroundTint="#E8E8E8" />
+
+
+    </RelativeLayout>
+</RelativeLayout>
