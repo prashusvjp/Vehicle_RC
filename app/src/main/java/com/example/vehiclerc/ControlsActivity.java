@@ -26,8 +26,8 @@ public class ControlsActivity extends AppCompatActivity {
     VideoView videoView;
     Spinner devicesListSpinner;
     static int REQUEST_ENABLE_BT = 1441;
-    BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
-    BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+
+//
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +35,17 @@ public class ControlsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_controls);
         initializeViews();
         setUpBluetooth();
+
     }
 
     private void setUpBluetooth() {
+            BluetoothManager bluetoothManager = getSystemService(BluetoothManager.class);
+            BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+
         if (bluetoothAdapter != null) {
             if (!bluetoothAdapter.isEnabled()) {
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                     startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
                 }
             }
@@ -61,8 +58,10 @@ public class ControlsActivity extends AppCompatActivity {
                         String deviceName = device.getName();
                         String deviceHardwareAddress = device.getAddress(); // MAC address
                         devicesList.add(deviceName);
+                        //Toast.makeText(this, deviceName, Toast.LENGTH_SHORT).show();
                     }
                 }
+
                 ArrayAdapter<String> arrayAdapter =
                         new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,devicesList);
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -77,7 +76,6 @@ public class ControlsActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT
             ).show();
         }
-
     }
 
 
