@@ -85,7 +85,7 @@
             android:background="@drawable/rounded_view_power"
             android:elevation="10dp"
             android:padding="15dp"
-            android:src="@drawable/camera_inactive" />
+            android:src="@drawable/ic_object_active" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -126,11 +126,12 @@
             android:paddingTop="10dp">
 
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/arrowLeftImgView"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:src="@drawable/ic_arrow"
+                android:background="@drawable/rounded_arrows"
                 android:rotation="90" />
 
             <ImageView
@@ -141,11 +142,12 @@
                 android:contentDescription="Brake Image"
                 android:src="@drawable/brake" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/arrowRightImgView"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:src="@drawable/ic_arrow"
+                android:background="@drawable/rounded_arrows"
                 android:rotation="270" />
         </LinearLayout>
 
@@ -160,20 +162,22 @@
             android:elevation="20dp"
             android:paddingTop="10dp">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/arrowForwardImgView"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:src="@drawable/ic_arrow"
                 android:rotation="180"
+                android:background="@drawable/rounded_arrows"
                 android:layout_centerHorizontal="true"/>
 
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/arrowBackwardImgView"
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_marginLeft="10dp"
+                android:background="@drawable/rounded_arrows"
                 android:src="@drawable/ic_arrow" />
         </LinearLayout>
 

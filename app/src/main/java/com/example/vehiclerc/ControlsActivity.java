@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import android.widget.VideoView;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +38,7 @@ import java.util.UUID;
 
 public class ControlsActivity extends AppCompatActivity {
     ImageView brakeImgView, leftIndicatorImgView, rightIndicatorImgView, powerImgView;
+    ImageButton moveForwardImgView, moveBackwardImgView, moveLeftImgView, moveRightImgView;
     boolean powerState = false, streamState = false, leftIndicatorState = false, rightIndicatorState = false;
     VideoView videoView;
     Spinner devicesListSpinner;
@@ -43,47 +47,12 @@ public class ControlsActivity extends AppCompatActivity {
     BluetoothManager bluetoothManager;
     BluetoothAdapter bluetoothAdapter;
     BluetoothSocket socket = null;
+    OutputStream bOutputStream=null;
     Set<BluetoothDevice> pairedDevices;
     HashMap<String, BluetoothDevice> deviceMap = new HashMap<>();
     final static int FORWARD = 0, LEFT=4, RIGHT=1, BACKWARD=7, LEFT_INDICATOR=8, RIGHT_INDICATOR=9, AUTO_PILOT=10, STOP=11;
 
-    //events
-    View.OnClickListener leftIndicator = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            leftIndicatorState=!leftIndicatorState;
-            rightIndicatorState=false;
-            controlViews(LEFT_INDICATOR);
-        }
-    };
 
-    View.OnClickListener rightIndicator = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            rightIndicatorState=!rightIndicatorState;
-            leftIndicatorState=false;
-            controlViews(RIGHT_INDICATOR);
-        }
-    };
-
-    View.OnTouchListener moveForward = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return false;
-        }
-    };
-    View.OnTouchListener moveBackward = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return false;
-        }
-    };
-    View.OnTouchListener moveLeft = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            return false;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +69,7 @@ public class ControlsActivity extends AppCompatActivity {
                     if(socket!=null){
                         try {
                             socket.close();
+                            socket=null;
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -108,15 +78,17 @@ public class ControlsActivity extends AppCompatActivity {
                     if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH)
                             == PackageManager.PERMISSION_GRANTED)
                         try{
-                            Toast.makeText(ControlsActivity.this, deviceMap.get(seletedItem).getAddress()+
-                                    ", "+seletedItem, Toast.LENGTH_SHORT).show();
-                            socket = deviceMap.get(seletedItem).createRfcommSocketToServiceRecord(UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee"));
+                            socket = deviceMap.get(seletedItem)
+                                    .createRfcommSocketToServiceRecord(UUID.fromString("94f39d29-7d6d-437d-973b-fba39e49d4ee"));
+                            bluetoothAdapter.cancelDiscovery();
                             socket.connect();
-                            OutputStream mmOutputStream = socket.getOutputStream();
-                            mmOutputStream.write("Hola mi estimoda".getBytes());
+                            Toast.makeText(ControlsActivity.this,
+                                    "Connected to " + deviceMap.get(seletedItem).getName() +" Successfully!",
+                                    Toast.LENGTH_SHORT).show();
+                            bOutputStream = socket.getOutputStream();
 
                         }catch(IOException e){
-                            Toast.makeText(ControlsActivity.this, "Sorry, something went wrong.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ControlsActivity.this, "Sorry, something went wrong while connecting to bluetooth", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -143,6 +115,7 @@ public class ControlsActivity extends AppCompatActivity {
                             permissions,
                             REQUEST_ENABLE_MBT);
                 }else{
+                    bluetoothAdapter.enable();
                     updateSpinner();
                 }
             }else{
@@ -151,6 +124,7 @@ public class ControlsActivity extends AppCompatActivity {
                             new String[]{Manifest.permission.BLUETOOTH},
                             REQUEST_ENABLE_BT);
                 }else{
+                    bluetoothAdapter.enable();
                     updateSpinner();
                 }
             }
@@ -166,7 +140,6 @@ public class ControlsActivity extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     private void updateSpinner() {
         try {
-            bluetoothAdapter.enable();
             pairedDevices = this.bluetoothAdapter.getBondedDevices();
             List<String> devicesList = new ArrayList<String>();
             devicesList.add("---None---");
@@ -209,7 +182,6 @@ public class ControlsActivity extends AppCompatActivity {
         }
     }
 
-
     private void initializeViews() {
         getSupportActionBar().hide();
         brakeImgView = findViewById(R.id.brakeImgView);
@@ -219,6 +191,18 @@ public class ControlsActivity extends AppCompatActivity {
 
         rightIndicatorImgView = findViewById(R.id.rightIndicatorImgView);
         rightIndicatorImgView.setOnClickListener(rightIndicator);
+
+        moveForwardImgView = findViewById(R.id.arrowForwardImgView);
+        moveForwardImgView.setOnTouchListener(movements);
+
+        moveBackwardImgView =findViewById(R.id.arrowBackwardImgView);
+        moveBackwardImgView.setOnTouchListener(movements);
+
+        moveLeftImgView = findViewById(R.id.arrowLeftImgView);
+        moveLeftImgView.setOnTouchListener(movements);
+
+        moveRightImgView=findViewById(R.id.arrowRightImgView);
+        moveRightImgView.setOnTouchListener(movements);
 
         powerImgView = findViewById(R.id.powerImgView);
         devicesListSpinner = findViewById(R.id.devicesListSpinner);
@@ -238,7 +222,7 @@ public class ControlsActivity extends AppCompatActivity {
                 }
             }
         };
-        timer.scheduleAtFixedRate(task,0,1000);
+        timer.scheduleAtFixedRate(task,0,500);
     }
 
     private void controlViews(int id){
@@ -264,5 +248,81 @@ public class ControlsActivity extends AppCompatActivity {
             default:
                 throw new IllegalStateException("Unexpected value: " + id);
         }
+    }
+
+    //events
+    View.OnClickListener leftIndicator = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            leftIndicatorState=!leftIndicatorState;
+            rightIndicatorState=false;
+            controlViews(LEFT_INDICATOR);
+            try {
+                bOutputStream.write(LEFT_INDICATOR);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    View.OnClickListener rightIndicator = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            rightIndicatorState=!rightIndicatorState;
+            leftIndicatorState=false;
+            try {
+                bOutputStream.write(RIGHT_INDICATOR);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            controlViews(RIGHT_INDICATOR);
+        }
+    };
+
+    ImageButton.OnTouchListener movements = new View.OnTouchListener() {
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent) {
+            int data=-1;
+            int id=view.getId();
+            data=id==moveForwardImgView.getId()?FORWARD:id==moveBackwardImgView.getId()?BACKWARD:id==moveLeftImgView.getId()?LEFT:RIGHT;
+            switch(motionEvent.getAction()){
+                case MotionEvent.ACTION_UP:
+                    //Toast.makeText(ControlsActivity.this, "Released "+data, Toast.LENGTH_SHORT).show();
+                    try {
+                        view.setBackgroundColor(getColor(R.color.transparent));
+                        bOutputStream.write(STOP);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    enableArrows();
+                    break;
+                case MotionEvent.ACTION_DOWN:
+                    //Toast.makeText(ControlsActivity.this, "Pressed "+data, Toast.LENGTH_SHORT).show();
+                    try {
+                        view.setBackgroundColor(getColor(R.color.grey));
+                        bOutputStream.write(data);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    disableArrows(view);
+                    break;
+            }
+            return false;
+        }
+    };
+
+    private void enableArrows(){
+        moveForwardImgView.setEnabled(true);
+        moveBackwardImgView.setEnabled(true);
+        moveLeftImgView.setEnabled(true);
+        moveRightImgView.setEnabled(true);
+    }
+
+    private void disableArrows(View v){
+        moveForwardImgView.setEnabled(false);
+        moveBackwardImgView.setEnabled(false);
+        moveLeftImgView.setEnabled(false);
+        moveRightImgView.setEnabled(false);
+        v.setEnabled(true);
     }
 }
