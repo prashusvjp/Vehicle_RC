@@ -46,7 +46,7 @@
         </RelativeLayout>
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/autoPilotSwitch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -76,23 +76,23 @@
             android:padding="15dp"
             android:src="@drawable/camera_inactive" />
 
-        <ImageView
-            android:id="@+id/switchODImgView"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:background="@drawable/rounded_view_power"
-            android:elevation="10dp"
-            android:padding="15dp"
-            android:src="@drawable/ic_object_active" />
+<!--        <ImageView-->
+<!--            android:id="@+id/switchODImgView"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="50dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:background="@drawable/rounded_view_power"-->
+<!--            android:elevation="10dp"-->
+<!--            android:padding="15dp"-->
+<!--            android:src="@drawable/ic_object_active" />-->
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp">
+            android:layout_marginEnd="5dp">
 
             <TextView
                 android:id="@+id/connectDeviceTextView"
@@ -102,11 +102,19 @@
 
             <Spinner
                 android:id="@+id/devicesListSpinner"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_below="@id/connectDeviceTextView" />
         </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/refreshImgView"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/ic_refresh"
+            android:layout_gravity="center"/>
 
 
 
