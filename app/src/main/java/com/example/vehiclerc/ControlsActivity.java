@@ -54,7 +54,7 @@ public class ControlsActivity extends AppCompatActivity {
     OutputStream bOutputStream=null;
     Set<BluetoothDevice> pairedDevices;
     HashMap<String, BluetoothDevice> deviceMap = new HashMap<>();
-    final static int FORWARD = 0, LEFT=6, RIGHT=3, BACKWARD=7, LEFT_INDICATOR=9, RIGHT_INDICATOR=10,
+    final static int FORWARD = 15, LEFT=6, RIGHT=3, BACKWARD=7, LEFT_INDICATOR=9, RIGHT_INDICATOR=10,
             AUTO_PILOT=11, STOP=8;
 
     @Override
