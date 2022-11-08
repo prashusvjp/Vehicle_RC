@@ -54,7 +54,7 @@ public class ControlsActivity extends AppCompatActivity {
     OutputStream bOutputStream=null;
     Set<BluetoothDevice> pairedDevices;
     HashMap<String, BluetoothDevice> deviceMap = new HashMap<>();
-    final static int FORWARD = 15, LEFT=6, RIGHT=3, BACKWARD=7, LEFT_INDICATOR=9, RIGHT_INDICATOR=10,
+    final static int FORWARD = 15, LEFT=12, RIGHT=3, BACKWARD=7, LEFT_INDICATOR=9, RIGHT_INDICATOR=10,
             AUTO_PILOT=11, STOP=8;
 
     @Override
@@ -379,7 +379,10 @@ public class ControlsActivity extends AppCompatActivity {
                         bOutputStream = socket.getOutputStream();
 
                     }catch(Exception e){
-                        Toast.makeText(ControlsActivity.this, "Sorry, something went wrong while connecting to bluetooth", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ControlsActivity.this,
+                                "Sorry, something went wrong while connecting to bluetooth",
+                                Toast.LENGTH_SHORT).show();
+                        devicesListSpinner.setSelection(0);
                     }
             }
 
@@ -398,6 +401,7 @@ public class ControlsActivity extends AppCompatActivity {
             powerState=false;
             powerImgView.setColorFilter(Color.RED);
             bOutputStream=null;
+            autopilotSwitch.setChecked(false);
             socket=null;
         }
     };
